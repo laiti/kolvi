@@ -19,7 +19,7 @@
     "url": "https://github.com/laiti/kolvi/issues"
   },
   "homepage": "https://github.com/laiti/kolvi#readme",
-  "dependencies": {
-    "cypress.io": "^0.0.2"
+  "devDependencies": {
+    "cypress": "^6.8.0"
   }
 }
