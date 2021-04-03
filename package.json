@@ -1,0 +1,25 @@
+{
+  "name": "kolvi",
+  "version": "1.0.0",
+  "description": "Cypress.io project",
+  "main": "compiled/index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laiti/kolvi.git"
+  },
+  "keywords": [
+    "cypress.io"
+  ],
+  "author": "Antti Laiti <antti@laiti.fi>",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/laiti/kolvi/issues"
+  },
+  "homepage": "https://github.com/laiti/kolvi#readme",
+  "dependencies": {
+    "cypress.io": "^0.0.2"
+  }
+}
