@@ -5,7 +5,7 @@ describe('My First Test', () => {
         cy.get('input[name=username]').type('Hello, World');
         cy.get('input[name=password]').type('Hello, World');
         cy.contains('Accept All Cookies').click();
-        // cy.get('#auth0-label-submit').click();
+        cy.get('.auth0-label-submit').contains('Log In').click();
     })
 })
   
