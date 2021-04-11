@@ -1,7 +1,29 @@
 const RBURL = 'https://ratebeer.com';
 
-// Variables from CSV
-const format = 'Bottle';
+// TEMP: Variables from CSV
+const format = 'Can';
+const aroma = 1;
+const appearance = 2;
+const flavor = 3;
+const mouthfeel = 4;
+const overall = 5;
+
+// Slider classes
+const sliderClasses = {
+    0: 'hRiarj',
+    1: 'dBWBq',
+    2: 'kEsWct',
+    3: 'ibtkUr',
+    4: 'kqPTBY',
+    5: 'fjDdZP',
+    6: 'cXmNnE',
+    7: 'eHBGGW',
+    8: 'hAbJBB',
+    9: 'fWvzMO',
+   10: 'jHIuhD',
+}
+
+const sliderDivClass = 'div > div[class="Slider___StyledDiv-kfCDlB dxmuNj"] > div > div > div[class="Slider__Tick-gLnXwE Slider___StyledTick-dNReAI';
 
 describe('Login to Ratebeer and post rating', () => {
     it('Login to Ratebeer', () => {
@@ -19,12 +41,16 @@ describe('Login to Ratebeer and post rating', () => {
         // The elements in rating view can be hidden so we must use force.
         cy.get('textarea[class^="MuiInputBase-input"][aria-invalid=false]').type('foo', { force: true });
 
-        // Sliders; must use nth-child
-        cy.get('div[class="Slider__Tick-gLnXwE Slider___StyledTick-dNReAI eHBGGW"]').click({ force: true });
+        // Sliders; rather complex nested div section
+        cy.get(`div[data-testid="attribute-slider-aroma"] > ${sliderDivClass} ${sliderClasses[aroma]}"]`).click({ force: true });
+        cy.get(`div[data-testid="attribute-slider-appearance"] > ${sliderDivClass} ${sliderClasses[appearance]}"]`).click({ force: true });
+        cy.get(`div[data-testid="attribute-slider-flavor"] > ${sliderDivClass} ${sliderClasses[flavor]}"]`).click({ force: true });
+        cy.get(`div[data-testid="attribute-slider-mouthfeel"] > ${sliderDivClass} ${sliderClasses[mouthfeel]}"]`).click({ force: true });
+        cy.get(`div[data-testid="attribute-slider-overall"] > ${sliderDivClass} ${sliderClasses[overall]}"]`).click({ force: true });
 
         // Format the drink was served in
-        cy.contains(format).click({ force: true });
-        // cy.contains('Save').click();
+        cy.get('span').contains(format).click({ force: true });
+        // cy.get('span').contains('Save').click();
     })
 })
   
