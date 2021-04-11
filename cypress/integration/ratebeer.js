@@ -1,3 +1,6 @@
+import csv from 'csv-parser';
+const fs = require('fs');
+
 const RBURL = 'https://ratebeer.com';
 
 // TEMP: Variables from CSV
