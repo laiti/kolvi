@@ -38,6 +38,7 @@ const sliderDivClass = 'div > div[class="Slider___StyledDiv-kfCDlB dxmuNj"] > di
 
 describe('Login to Ratebeer and post rating', () => {
     it('Login to Ratebeer', () => {
+        cy.viewport(1280,1280);
         cy.visit('https://ratebeer.com/');
         cy.contains('Log In').click();
         cy.get('input[name=username]').type(Cypress.env('RB_USERNAME'));
@@ -64,10 +65,10 @@ describe('Login to Ratebeer and post rating', () => {
             cy.get(`div[data-testid="attribute-slider-mouthfeel"] > ${sliderDivClass} ${sliderClasses[Number(rating.mouthfeel) * 4]}"]`).click({ force: true });
             cy.get(`div[data-testid="attribute-slider-overall"] > ${sliderDivClass} ${sliderClasses[Number(rating.overall)]}"]`).click({ force: true });
 
-            cy.scrollTo('bottomRight');
-
             // Format the drink was served in
-            cy.get('span').contains(rating.format).click({ force: true }).pause();
+            cy.get('div[class="MuiButtonBase-root MuiChip-root mr-3 MuiChip-outlined MuiChip-clickable"] > span[class="MuiChip-label"]').contains(rating.format).click();
+
+            cy.get('span').contains('Save').pause();
             // cy.get('span').contains('Save').click();
 
             // TODO: Ensure save button missing, ensure another element. If fails, save it to log and proceed
