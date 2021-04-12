@@ -39,7 +39,7 @@ const sliderDivClass = 'div > div[class="Slider___StyledDiv-kfCDlB dxmuNj"] > di
 describe('Login to Ratebeer and post rating', () => {
     it('Login to Ratebeer', () => {
         cy.viewport(1280,1280);
-        cy.visit('https://ratebeer.com/');
+        cy.visit('https://www.ratebeer.com/');
         cy.contains('Log In').click();
         cy.get('input[name=username]').type(Cypress.env('RB_USERNAME'));
         cy.get('input[name=password]').type(Cypress.env('RB_PASSWORD'));
@@ -55,7 +55,7 @@ describe('Login to Ratebeer and post rating', () => {
             cy.contains('Write a review').click();
         
             // Multiple textareas visible; correct one is with this class and aria-invalid attribute.
-            // The elements in rating view can be hidden so we must use force.
+            // The elements in rating view can be hidden so we must use forces.
             cy.get('textarea[class^="MuiInputBase-input"][aria-invalid=false]').type(`${rating.rating} Rated on ${rating.date}.`, { force: true });
 
             // Sliders; rather complex nested div section
@@ -71,8 +71,11 @@ describe('Login to Ratebeer and post rating', () => {
             cy.get('span').contains('Save').pause();
             // cy.get('span').contains('Save').click();
 
-            // TODO: Ensure save button missing, ensure another element. If fails, save it to log and proceed
-        }    
+            // TODO: If fails, save it to log and proceed
+            cy.get('div').contains('Your review has been updated').should('exist');
+            const divScore = Number(rating.total) / 10;
+            cy.get('div').contains(`You rated this beer ${divScore.toString}`);
+        }
     })
 })
   
