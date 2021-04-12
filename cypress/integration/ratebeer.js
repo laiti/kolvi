@@ -1,5 +1,6 @@
-import csv from 'csv-parser';
-const CSVData = require('../../data/csvdata.js');
+import os from 'os';
+import { CSVData as _CSVData } from '../../data/csvdata.js';
+
 
 // TEMP: Variables from CSV
 const format = 'Can';
@@ -49,9 +50,10 @@ describe('Login to Ratebeer and post rating', () => {
         cy.contains('Log In').should('not.exist');
 
         // Read CSV and add each rating in a loop
-        for (const rating of CSVData.CSVData) {
+        for (const rating of _CSVData) {
             console.log(rating.link);
             cy.visit(rating.link).debug();
+
             cy.contains('Write a review').click();
         
             // Multiple textareas visible; correct one is with this class and aria-invalid attribute.
@@ -68,13 +70,19 @@ describe('Login to Ratebeer and post rating', () => {
             // Format the drink was served in
             cy.get('div[class="MuiButtonBase-root MuiChip-root mr-3 MuiChip-outlined MuiChip-clickable"] > span[class="MuiChip-label"]').contains(rating.format).click();
 
-            cy.get('span').contains('Save').pause();
-            // cy.get('span').contains('Save').click();
+            // Finally, save rating
+            cy.get('span').contains('Save').click();
 
-            // TODO: If fails, save it to log and proceed
-            cy.get('div').contains('Your review has been updated').should('exist');
+            // If fails, save it to log and proceed
             const divScore = Number(rating.total) / 10;
-            cy.get('div').contains(`You rated this beer ${divScore.toString}`);
+            cy.get('div').contains(`You rated this beer ${divScore.toString()}`).should('exist').then((rated) => {
+                cy.log(rating.link);
+                cy.writeFile('data/failed.txt', `${rating.link}${os.EOL}`, { flag: 'a+' });
+            })
+            cy.get('div').contains('Your review has been updated').should('exist').then((rated) => {
+                cy.log(rating.link);
+                cy.writeFile('data/failed.txt', `${rating.link}${os.EOL}`, { flag: 'a+' });
+            })
         }
     })
 })
