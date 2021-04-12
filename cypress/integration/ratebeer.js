@@ -44,6 +44,7 @@ describe('Login to Ratebeer and post rating', () => {
         cy.get('input[name=password]').type(Cypress.env('RB_PASSWORD'));
         cy.contains('Accept All Cookies').click();
         cy.get('.auth0-label-submit').contains('Log In').click();
+        cy.contains('Thanks for logging in').should('exist');
         cy.contains('Log In').should('not.exist');
 
         // Read CSV and add each rating in a loop
@@ -63,9 +64,13 @@ describe('Login to Ratebeer and post rating', () => {
             cy.get(`div[data-testid="attribute-slider-mouthfeel"] > ${sliderDivClass} ${sliderClasses[Number(rating.mouthfeel) * 4]}"]`).click({ force: true });
             cy.get(`div[data-testid="attribute-slider-overall"] > ${sliderDivClass} ${sliderClasses[Number(rating.overall)]}"]`).click({ force: true });
 
+            cy.scrollTo('bottomRight');
+
             // Format the drink was served in
-            cy.get('span').contains(rating.format).click({ force: true });
+            cy.get('span').contains(rating.format).click({ force: true }).pause();
             // cy.get('span').contains('Save').click();
+
+            // TODO: Ensure save button missing, ensure another element. If fails, save it to log and proceed
         }    
     })
 })
