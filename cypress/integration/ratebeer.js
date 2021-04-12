@@ -1,5 +1,5 @@
 import csv from 'csv-parser';
-const fs = require('data/ratebeer.js');
+const CSVData = require('../../data/csvdata.js');
 
 // TEMP: Variables from CSV
 const format = 'Can';
@@ -9,21 +9,29 @@ const flavor = 3;
 const mouthfeel = 4;
 const overall = 5;
 
-const rbdata = fs.createReadStream('data/ratebeer.csv');
-
 // Slider classes
 const sliderClasses = {
     0: 'hRiarj',
-    1: 'dBWBq',
-    2: 'kEsWct',
-    3: 'ibtkUr',
-    4: 'kqPTBY',
-    5: 'fjDdZP',
-    6: 'cXmNnE',
-    7: 'eHBGGW',
-    8: 'hAbJBB',
-    9: 'fWvzMO',
-   10: 'jHIuhD',
+    1: 'cvIRpx',
+    2: 'dBWBq',
+    3: 'dntIqb',
+    4: 'kEsWct',
+    5: 'fXCPLY',
+    6: 'ibtkUr',
+    7: 'oFseU',
+    8: 'kqPTBY',
+    9: 'ywDJh',
+    10: 'fjDdZP',
+    11: 'fIZvXG',
+    12: 'cXmNnE',
+    13: 'kpsOiU',
+    14: 'eHBGGW',
+    15: 'bEiHuf',
+    16: 'hAbJBB',
+    17: 'fTdEjy',
+    18: 'fWvzMO',
+    19: 'eamjUa',
+    20: 'jHIuhD',
 }
 
 const sliderDivClass = 'div > div[class="Slider___StyledDiv-kfCDlB dxmuNj"] > div > div > div[class="Slider__Tick-gLnXwE Slider___StyledTick-dNReAI';
@@ -39,30 +47,26 @@ describe('Login to Ratebeer and post rating', () => {
         cy.contains('Log In').should('not.exist');
 
         // Read CSV and add each rating in a loop
-        rbdata.pipe(csv()).on('data', (rating) => {
-
-            cy.visit(`https://ratebeer.com/beer/pfriem-vienna-lager/479195/`);
+        for (const rating of CSVData.CSVData) {
+            console.log(rating.link);
+            cy.visit(rating.link).debug();
             cy.contains('Write a review').click();
         
             // Multiple textareas visible; correct one is with this class and aria-invalid attribute.
             // The elements in rating view can be hidden so we must use force.
-            cy.get('textarea[class^="MuiInputBase-input"][aria-invalid=false]').type('foo', { force: true });
+            cy.get('textarea[class^="MuiInputBase-input"][aria-invalid=false]').type(`${rating.rating} Rated on ${rating.date}.`, { force: true });
 
             // Sliders; rather complex nested div section
-            cy.get(`div[data-testid="attribute-slider-aroma"] > ${sliderDivClass} ${sliderClasses[aroma]}"]`).click({ force: true });
-            cy.get(`div[data-testid="attribute-slider-appearance"] > ${sliderDivClass} ${sliderClasses[appearance]}"]`).click({ force: true });
-            cy.get(`div[data-testid="attribute-slider-flavor"] > ${sliderDivClass} ${sliderClasses[flavor]}"]`).click({ force: true });
-            cy.get(`div[data-testid="attribute-slider-mouthfeel"] > ${sliderDivClass} ${sliderClasses[mouthfeel]}"]`).click({ force: true });
-            cy.get(`div[data-testid="attribute-slider-overall"] > ${sliderDivClass} ${sliderClasses[overall]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-aroma"] > ${sliderDivClass} ${sliderClasses[rating.aroma]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-appearance"] > ${sliderDivClass} ${sliderClasses[rating.appearance * 2]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-flavor"] > ${sliderDivClass} ${sliderClasses[rating.flavor]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-mouthfeel"] > ${sliderDivClass} ${sliderClasses[rating.mouthfeel * 2]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-overall"] > ${sliderDivClass} ${sliderClasses[rating.overall]}"]`).click({ force: true });
 
             // Format the drink was served in
-            cy.get('span').contains(format).click({ force: true });
+            cy.get('span').contains(rating.format).click({ force: true });
             // cy.get('span').contains('Save').click();
-        })
-        .on('end', () => {
-            console.log('CSV file successfully processed');
-        });
-            
+        }    
     })
 })
   
