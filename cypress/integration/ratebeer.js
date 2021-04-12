@@ -57,11 +57,11 @@ describe('Login to Ratebeer and post rating', () => {
             cy.get('textarea[class^="MuiInputBase-input"][aria-invalid=false]').type(`${rating.rating} Rated on ${rating.date}.`, { force: true });
 
             // Sliders; rather complex nested div section
-            cy.get(`div[data-testid="attribute-slider-aroma"] > ${sliderDivClass} ${sliderClasses[rating.aroma]}"]`).click({ force: true });
-            cy.get(`div[data-testid="attribute-slider-appearance"] > ${sliderDivClass} ${sliderClasses[rating.appearance * 2]}"]`).click({ force: true });
-            cy.get(`div[data-testid="attribute-slider-flavor"] > ${sliderDivClass} ${sliderClasses[rating.flavor]}"]`).click({ force: true });
-            cy.get(`div[data-testid="attribute-slider-mouthfeel"] > ${sliderDivClass} ${sliderClasses[rating.mouthfeel * 2]}"]`).click({ force: true });
-            cy.get(`div[data-testid="attribute-slider-overall"] > ${sliderDivClass} ${sliderClasses[rating.overall]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-aroma"] > ${sliderDivClass} ${sliderClasses[Number(rating.aroma) * 2]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-appearance"] > ${sliderDivClass} ${sliderClasses[Number(rating.appearance) * 4]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-flavor"] > ${sliderDivClass} ${sliderClasses[Number(rating.taste) * 2]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-mouthfeel"] > ${sliderDivClass} ${sliderClasses[Number(rating.mouthfeel) * 4]}"]`).click({ force: true });
+            cy.get(`div[data-testid="attribute-slider-overall"] > ${sliderDivClass} ${sliderClasses[Number(rating.overall)]}"]`).click({ force: true });
 
             // Format the drink was served in
             cy.get('span').contains(rating.format).click({ force: true });
