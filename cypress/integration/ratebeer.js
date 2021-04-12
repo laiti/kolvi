@@ -73,13 +73,15 @@ describe('Login to Ratebeer and post rating', () => {
             // Finally, save rating
             cy.get('span').contains('Save').click();
 
-            // If fails, save it to log and proceed
-            const divScore = Number(rating.total) / 10;
-            cy.get('div').contains(`You rated this beer ${divScore.toString()}`).should('exist').then((rated) => {
+            // Check that rating passed and write to log if not
+            const divScore = Number(rating.total) / 10
+            // At this point we should see a note that review has been updated
+            cy.get('div').contains('Your review has been updated').should('not.exist').then((rated) => {
                 cy.log(rating.link);
                 cy.writeFile('data/failed.txt', `${rating.link}${os.EOL}`, { flag: 'a+' });
             })
-            cy.get('div').contains('Your review has been updated').should('exist').then((rated) => {
+            // And that we've already rated the product + scores
+            cy.get('div').contains(`You rated this beer ${divScore.toString()}`).should('not.exist').then((rated) => {
                 cy.log(rating.link);
                 cy.writeFile('data/failed.txt', `${rating.link}${os.EOL}`, { flag: 'a+' });
             })
