@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/laiti/kolvi#readme",
   "devDependencies": {
-    "cypress": "^7.0.1"
+    "cypress": "^7.5.0"
   },
   "dependencies": {
     "csv-parser": "^3.0.0"
